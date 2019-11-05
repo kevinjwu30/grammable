@@ -1,0 +1,313 @@
+  [1m[35m (0.4ms)[0m  [1m[35mDROP DATABASE IF EXISTS "grammable_development"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP DATABASE IF EXISTS "grammable_test"[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5866445207947997295);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateGrams (20180710042903)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE TABLE "grams" ("id" serial primary key, "message" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180710042903"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to DeviseCreateUsers (20180710225421)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" serial primary key, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" timestamp, "last_sign_in_at" timestamp, "current_sign_in_ip" inet, "last_sign_in_ip" inet, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180710225421"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AlterGramsAddUserId (20180710231635)
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "grams" ADD "user_id" integer[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX  "index_grams_on_user_id" ON "grams"  ("user_id")[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180710231635"]]
+  [1m[35m (2.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddPictureToGrams (20180713233035)
+  [1m[35m (3.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "grams" ADD "picture" character varying[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180713233035"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateComments (20180714005742)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.2ms)[0m  [1m[35mCREATE TABLE "comments" ("id" serial primary key, "message" text, "user_id" integer, "gram_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE  INDEX  "index_comments_on_user_id" ON "comments"  ("user_id")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX  "index_comments_on_gram_id" ON "comments"  ("gram_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20180714005742"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2019-11-05 22:30:20.735591"], ["updated_at", "2019-11-05 22:30:20.735591"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(5866445207947997295)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:47:57 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  [1m[36mActiveRecord::SchemaMigration Load (2.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (1.8ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  Rendered grams/index.html.erb within layouts/application (16.2ms)
+Completed 200 OK in 14828ms (Views: 14662.3ms | ActiveRecord: 2.7ms)
+
+
+Started GET "/users/sign_up" for 10.0.2.2 at 2019-11-05 22:48:18 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by Devise::RegistrationsController#new as HTML
+  Rendering devise/registrations/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.2ms)
+  Rendered devise/registrations/new.html.erb within layouts/application (481.2ms)
+Completed 200 OK in 872ms (Views: 854.7ms | ActiveRecord: 8.5ms)
+
+
+Started POST "/users" for 10.0.2.2 at 2019-11-05 22:48:36 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by Devise::RegistrationsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"EqevZ0/uoKfnNuKlJljNygScMovDLdWKWLQujWUCTrChMmb/lMfsJYvjASlxMzC3xKANaF7e0z6LAxFDflVd+Q==", "user"=>{"email"=>"kevinjwu30@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}, "commit"=>"Sign up"}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (2.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "kevinjwu30@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.7ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["email", "kevinjwu30@gmail.com"], ["encrypted_password", "$2a$11$nNUjvhjHDx66FrfTANM06eaes6sMKg7PyJyxdzcV1ya4vZHssNogq"], ["created_at", "2019-11-05 22:48:36.306779"], ["updated_at", "2019-11-05 22:48:36.306779"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "users" SET "sign_in_count" = $1, "current_sign_in_at" = $2, "last_sign_in_at" = $3, "current_sign_in_ip" = $4, "last_sign_in_ip" = $5, "updated_at" = $6 WHERE "users"."id" = $7[0m  [["sign_in_count", 1], ["current_sign_in_at", "2019-11-05 22:48:36.312565"], ["last_sign_in_at", "2019-11-05 22:48:36.312565"], ["current_sign_in_ip", "10.0.2.2/32"], ["last_sign_in_ip", "10.0.2.2/32"], ["updated_at", "2019-11-05 22:48:36.313722"], ["id", 1]]
+  [1m[35m (1.1ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 329ms (ActiveRecord: 6.6ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:48:36 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.7ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  Rendered grams/index.html.erb within layouts/application (3.1ms)
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 336ms (Views: 316.7ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/grams/new" for 10.0.2.2 at 2019-11-05 22:48:40 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#new as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering grams/new.html.erb within layouts/application
+  Rendered grams/new.html.erb within layouts/application (39.8ms)
+Completed 200 OK in 425ms (Views: 383.1ms | ActiveRecord: 3.0ms)
+
+
+Started POST "/grams" for 10.0.2.2 at 2019-11-05 22:50:42 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"GbzG34perwZxwzK1eTBiWvIBbGu7edyjO49zYILlzlmdRKViKfBTGnbS4j3vAOnHkgNbyoMfmplM2bQr9z7flA==", "gram"=>{"message"=>"Testing new post", "picture"=>#<ActionDispatch::Http::UploadedFile:0x00007f1e30a22920 @tempfile=#<Tempfile:/tmp/RackMultipart20191105-4779-1kg8x85.jpg>, @original_filename="img1.jpg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"gram[picture]\"; filename=\"img1.jpg\"\r\nContent-Type: image/jpeg\r\n">}, "commit"=>"Post!"}
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "grams" ("message", "created_at", "updated_at", "user_id", "picture") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "Testing new post"], ["created_at", "2019-11-05 22:50:42.967957"], ["updated_at", "2019-11-05 22:50:42.967957"], ["user_id", 1], ["picture", "img1.jpg"]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 2269ms (ActiveRecord: 2.7ms)
+
+
+  
+Excon::Error::Forbidden (Expected(200) <=> Actual(403 Forbidden)
+excon.error.response
+  :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>3183DC6C207617D7</RequestId><HostId>bIBbuoqj2pcGwVHR9Tz8A9/QeOmBJwmLMqkxD7SuRLAu0jYMeIciBxymXpLk6nghm0ETo8OEoAA=</HostId></Error>"
+  :cookies       => [
+  ]
+  :headers       => {
+    "Connection"       => "close"
+    "Content-Type"     => "application/xml"
+    "Date"             => "Tue, 05 Nov 2019 22:50:44 GMT"
+    "Server"           => "AmazonS3"
+    "x-amz-id-2"       => "bIBbuoqj2pcGwVHR9Tz8A9/QeOmBJwmLMqkxD7SuRLAu0jYMeIciBxymXpLk6nghm0ETo8OEoAA="
+    "x-amz-request-id" => "3183DC6C207617D7"
+  }
+  :host          => "tdd-bucket-wu.s3.amazonaws.com"
+  :local_address => "10.0.2.15"
+  :local_port    => 35591
+  :path          => "/uploads/gram/picture/1/img1.jpg"
+  :port          => 443
+  :reason_phrase => "Forbidden"
+  :remote_ip     => "52.216.206.83"
+  :status        => 403
+  :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+):
+  
+app/controllers/grams_controller.rb:13:in `create'
+  Rendering /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.4ms)
+  Rendering /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.4ms)
+  Rendering /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /home/vagrant/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/actionpack-5.0.7/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (40.8ms)
+Started POST "/grams" for 10.0.2.2 at 2019-11-05 22:51:25 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"GbzG34perwZxwzK1eTBiWvIBbGu7edyjO49zYILlzlmdRKViKfBTGnbS4j3vAOnHkgNbyoMfmplM2bQr9z7flA==", "gram"=>{"message"=>"Testing new post", "picture"=>#<ActionDispatch::Http::UploadedFile:0x00007f1e337d2bb8 @tempfile=#<Tempfile:/tmp/RackMultipart20191105-4779-o4c5pt.jpg>, @original_filename="img1.jpg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"gram[picture]\"; filename=\"img1.jpg\"\r\nContent-Type: image/jpeg\r\n">}, "commit"=>"Post!"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "grams" ("message", "created_at", "updated_at", "user_id", "picture") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "Testing new post"], ["created_at", "2019-11-05 22:51:25.454976"], ["updated_at", "2019-11-05 22:51:25.454976"], ["user_id", 1], ["picture", "img1.jpg"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 615ms (ActiveRecord: 1.9ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:51:29 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.4ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (1.7ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  Rendered grams/index.html.erb within layouts/application (77.9ms)
+Completed 200 OK in 417ms (Views: 390.3ms | ActiveRecord: 7.9ms)
+
+
+Started POST "/grams/2/comments" for 10.0.2.2 at 2019-11-05 22:51:38 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"6cpVO23pMFBBlHsO2nec0WLRz17s2LpgqbBp3bGEjsZM7/iq3C6MopMve0UPwQRi4qoABCUxyPahFpWozyjiTw==", "comment"=>{"message"=>"testing comments"}, "commit"=>"Add Comment", "gram_id"=>"2"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGram Load (0.2ms)[0m  [1m[34mSELECT  "grams".* FROM "grams" WHERE "grams"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (3.2ms)[0m  [1m[32mINSERT INTO "comments" ("message", "user_id", "gram_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "testing comments"], ["user_id", 1], ["gram_id", 2], ["created_at", "2019-11-05 22:51:38.568951"], ["updated_at", "2019-11-05 22:51:38.568951"]]
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 49ms (ActiveRecord: 5.0ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:51:38 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.5ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.6ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered grams/index.html.erb within layouts/application (31.0ms)
+Completed 200 OK in 408ms (Views: 386.3ms | ActiveRecord: 1.6ms)
+
+
+Started GET "/grams/2/edit" for 10.0.2.2 at 2019-11-05 22:51:40 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#edit as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGram Load (0.2ms)[0m  [1m[34mSELECT  "grams".* FROM "grams" WHERE "grams"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering grams/edit.html.erb within layouts/application
+  Rendered grams/edit.html.erb within layouts/application (23.6ms)
+Completed 200 OK in 415ms (Views: 394.5ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/grams/2/comments" for 10.0.2.2 at 2019-11-05 22:51:58 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"rvuQVxXAD92ca/qc3b4O9f7ZoJsj5ujExFFRF3gg8qwL3j3GpAezL07Q+tcICJZGfqJvweoPmlLM961iBoyeJQ==", "comment"=>{"message"=>"comments two"}, "commit"=>"Add Comment", "gram_id"=>"2"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGram Load (0.1ms)[0m  [1m[34mSELECT  "grams".* FROM "grams" WHERE "grams"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "comments" ("message", "user_id", "gram_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "comments two"], ["user_id", 1], ["gram_id", 2], ["created_at", "2019-11-05 22:51:58.992440"], ["updated_at", "2019-11-05 22:51:58.992440"]]
+  [1m[35m (0.3ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 9ms (ActiveRecord: 1.1ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:51:59 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.7ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered grams/index.html.erb within layouts/application (25.9ms)
+Completed 200 OK in 432ms (Views: 391.5ms | ActiveRecord: 1.7ms)
+
+
+Started GET "/grams/new" for 10.0.2.2 at 2019-11-05 22:52:02 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering grams/new.html.erb within layouts/application
+  Rendered grams/new.html.erb within layouts/application (25.8ms)
+Completed 200 OK in 379ms (Views: 350.6ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/grams" for 10.0.2.2 at 2019-11-05 22:52:13 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"jyD4Sfin57oDdIbB7rLd3a5yyk3VTAKsBkpdCyeV5k0L2Jv0WwkbpgRlVkl4glZAznD97O0qRJZxHJpAUk73gA==", "gram"=>{"message"=>"Test post two", "picture"=>#<ActionDispatch::Http::UploadedFile:0x00007f1e32fb1768 @tempfile=#<Tempfile:/tmp/RackMultipart20191105-4779-fu6uoi.png>, @original_filename="img2.png", @content_type="image/png", @headers="Content-Disposition: form-data; name=\"gram[picture]\"; filename=\"img2.png\"\r\nContent-Type: image/png\r\n">}, "commit"=>"Post!"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "grams" ("message", "created_at", "updated_at", "user_id", "picture") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "Test post two"], ["created_at", "2019-11-05 22:52:13.412776"], ["updated_at", "2019-11-05 22:52:13.412776"], ["user_id", 1], ["picture", "img2.png"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 655ms (ActiveRecord: 1.8ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:52:14 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.8ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.3ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 3]]
+  Rendered grams/index.html.erb within layouts/application (70.1ms)
+Completed 200 OK in 423ms (Views: 394.5ms | ActiveRecord: 3.3ms)
+
+
+Started POST "/grams/3/comments" for 10.0.2.2 at 2019-11-05 22:52:24 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Jm10TzPHJ1DlsSCzhEqq9DhrPvFTJOf5SbZE7Cx2mB6DSNneggCbojcKIPhR/DJHuBDxq5rNlW9BELiZUtr0lw==", "comment"=>{"message"=>"comment two"}, "commit"=>"Add Comment", "gram_id"=>"3"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mGram Load (0.2ms)[0m  [1m[34mSELECT  "grams".* FROM "grams" WHERE "grams"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "comments" ("message", "user_id", "gram_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["message", "comment two"], ["user_id", 1], ["gram_id", 3], ["created_at", "2019-11-05 22:52:24.963962"], ["updated_at", "2019-11-05 22:52:24.963962"]]
+  [1m[35m (6.1ms)[0m  [1m[35mCOMMIT[0m
+Redirected to http://localhost:3030/
+Completed 302 Found in 16ms (ActiveRecord: 7.0ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:52:24 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.3ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.6ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.4ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 3]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered grams/index.html.erb within layouts/application (55.0ms)
+Completed 200 OK in 442ms (Views: 409.5ms | ActiveRecord: 1.9ms)
+
+
+Started GET "/" for 10.0.2.2 at 2019-11-05 22:57:22 +0000
+Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+Processing by GramsController#index as HTML
+  Rendering grams/index.html.erb within layouts/application
+  [1m[36mGram Load (0.3ms)[0m  [1m[34mSELECT "grams".* FROM "grams"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 2]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mComment Load (0.2ms)[0m  [1m[34mSELECT "comments".* FROM "comments" WHERE "comments"."gram_id" = $1[0m  [["gram_id", 3]]
+  [1m[36mCACHE (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered grams/index.html.erb within layouts/application (42.5ms)
+Completed 200 OK in 5949ms (Views: 5922.7ms | ActiveRecord: 1.8ms)
+
+
